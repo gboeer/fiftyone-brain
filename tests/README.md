@@ -14,10 +14,29 @@ The brain currently uses both
 
 ## Running tests
 
-To run all tests in this directory, execute:
+The tests require the core `fiftyone` package, which is not installed by
+`install.sh`. See the
+[developer installation](../README.md#developer-installation) instructions for
+how to set it up alongside your source install of the Brain.
+
+Some tests also need optional packages. Without them, those tests either skip
+or fail, so to run the same set of tests as CI, install them too:
 
 ```shell
-pytest . -s
+pip install imageio pytest torch torchvision lancedb
+```
+
+To run all automated tests in this directory, as CI does, execute:
+
+```shell
+pytest . -s --ignore intensive/
+```
+
+The intensive tests must be run separately, as some of their module names clash
+with those of the automated tests:
+
+```shell
+pytest intensive/ -s
 ```
 
 To run a specific set of tests, execute:
