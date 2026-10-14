@@ -32,6 +32,14 @@ To run all automated tests in this directory, as CI does, execute:
 pytest . -s --ignore intensive/
 ```
 
+The tests create datasets in the database that FiftyOne is configured to use.
+If other environments with a different `fiftyone` version share that database,
+tests may fail with migration errors, so use a separate database instead:
+
+```shell
+FIFTYONE_DATABASE_NAME=fiftyone-brain-tests pytest . -s --ignore intensive/
+```
+
 The intensive tests must be run separately, as some of their module names clash
 with those of the automated tests:
 
