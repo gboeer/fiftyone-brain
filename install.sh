@@ -56,7 +56,9 @@ fi
 echo "***** INSTALLING FIFTYONE-BRAIN *****"
 if [ "$DEV_INSTALL" = true ]; then
     echo "Performing dev install"
-    $PIP install -e ".[dev]"
+    # Compat mode puts the source tree on sys.path, which lets static tools
+    # like pylint resolve `fiftyone.brain` alongside the core `fiftyone`
+    $PIP install -e ".[dev]" --config-settings editable_mode=compat
     pre-commit install
 else
     $PIP install .
