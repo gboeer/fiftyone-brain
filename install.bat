@@ -22,13 +22,26 @@ SHIFT
 GOTO parse
 :endparse
 
+:: Resolve pip backend
+where uv >nul 2>&1
+IF NOT ERRORLEVEL 1 (
+  set PIP=uv pip
+) else (
+  where pip >nul 2>&1
+  IF ERRORLEVEL 1 (
+    echo ERROR: Neither 'uv' nor 'pip' found in PATH. Please install one before running this script.
+    exit /b 1
+  )
+  set PIP=pip
+)
+
 echo ***** INSTALLING FIFTYONE-BRAIN *****
 IF %DEV_INSTALL%==true (
   echo Performing dev install
-  pip install -e .[dev]
+  %PIP% install -e .[dev]
   pre-commit install
 ) else (
-  pip install .
+  %PIP% install .
 )
 
 echo ***** INSTALLATION COMPLETE *****
